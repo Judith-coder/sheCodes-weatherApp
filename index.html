@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>homeworkWeek5SheCodesPlus</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/3ce48d8f5e.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Source+Code+Pro&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form id="city-search-form">
+        <input
+          type="search"
+          id="city-input"
+          placeholder="Enter a city name..."
+          autocomplete="off"
+        />
+        <input type="submit" id="submitCity" value="🔍" />
+      </form>
+
+      <h1 id="city-heading">Bordeaux</h1>
+      <h2 id="date-hour"></h2>
+      <button>Current location</button>
+      <section class="currentWeather">
+        <div class="row">
+          <div class="col-sm-4">
+            <h3 id="current-weather-description">Sunny</h3>
+            <div class="row">
+              <div class="col-sm-6 currentTemperature" id="current-temperature">
+                18
+              </div>
+              <div class="col-sm-6">
+                <div class="row">
+                  <div class="col-sm-12 unit-Choice">
+                    <div class="form-check">
+                      <input
+                        type="radio"
+                        name="unit"
+                        id="celsius-degrees-input"
+                        checked
+                      />
+                      <label
+                        for="celsius-degree-input"
+                        class="temperatureUnit"
+                        id="celsius-degrees-label"
+                        >°C
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 unit-Choice">
+                    <div class="form-check">
+                      <input
+                        type="radio"
+                        id="fahrenheit-degrees-input"
+                        name="unit"
+                      />
+                      <label
+                        for="fahrenheit-degrees-input"
+                        class="temperatureUnit"
+                        id="fahrenheit-degrees-label"
+                        >°F
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <i class="fas fa-sun current-weather-icon"></i>
+          </div>
+          <div class="col-sm-4">
+            <div class="row">
+              <div class="col-sm-12" id="feels-like">
+                Feels like:<span id="feels-like-temperature">18</span>°C
+              </div>
+              <div class="col-sm-12" id="wind-speed">
+                Wind: <span id="wind-speed-value">8</span>km/h
+              </div>
+              <div class="col-sm-12" id="humidity">Humidity: 33%</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="forecast">
+        <h4>Next hours...</h4>
+        <div class="row">
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>19h00</h5>
+                <i class="fas fa-sun forecastIcons"></i>
+                <p>15°C</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>22h00</h5>
+                <i class="fas fa-moon forecastIcons"></i>
+                <p>8°C</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>01h00</h5>
+                <i class="fas fa-moon forecastIcons"></i>
+                <p>6°C</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>04h00</h5>
+                <i class="fas fa-moon forecastIcons"></i>
+                <p>4°C</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>07h00</h5>
+                <i class="fas fa-sun forecastIcons"></i>
+                <p>2°C</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h4 class="nextDaysForecast">Next days...</h4>
+        <div class="row">
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>Wed</h5>
+                <i class="fas fa-cloud-sun forecastIcons"></i>
+                <p>7°C | 19°C</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>Thu</h5>
+                <i class="fas fa-cloud-sun forecastIcons"></i>
+                <p>5°C | 17°C</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>Fri</h5>
+                <i class="fas fa-cloud-sun forecastIcons"></i>
+                <p>6°C | 18°C</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>Sat</h5>
+                <i class="fas fa-cloud-sun forecastIcons"></i>
+                <p>5°C | 16°C</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <h5>Sun</h5>
+                <i class="fas fa-sun forecastIcons"></i>
+                <p>7°C | 21°C</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <footer>
+        This project was coded by
+        <a
+          href="https://www.linkedin.com/in/judith-charpentier-573b1b155/"
+          target="_blank"
+          >Judith Charpentier</a
+        >
+        and is open-sourced on
+        <a href="" target="_blank">Github</a>
+      </footer>
+    </div>
+    <script src="src/script.js"></script>
+  </body>
+</html>

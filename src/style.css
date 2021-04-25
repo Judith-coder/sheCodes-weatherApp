@@ -1,0 +1,117 @@
+body {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+form {
+  background: #fff;
+  border-radius: 50px;
+  display: block;
+  margin: 16px auto;
+  max-width: max-content;
+}
+
+h1,
+h2,
+h3,
+h5,
+footer,
+p,
+.currentTemperature {
+  text-align: center;
+}
+
+h1 {
+  font-size: 21px;
+  font-weight: bold;
+  margin: 0;
+}
+
+h2 {
+  font-size: 15px;
+  margin-top: 8px;
+  margin-left: 0;
+}
+
+h4 {
+  color: #fff;
+  font-size: 21px;
+  margin-left: 4px;
+}
+
+h5 {
+  font-size: 14px;
+  margin: 0;
+}
+
+p {
+  font-size: 12px;
+  margin: 4px 0;
+}
+
+footer {
+  color: #fff;
+  font-size: 12px;
+}
+
+a {
+  color: rgb(247, 92, 208);
+}
+.container {
+  background-image: url("file:///Users/judithcharpentier/Documents/SheCodes/SheCodesPlus8weeks/Week2/Homework/images/Bordeaux/J-lion.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid black;
+  border-radius: 25px;
+  max-width: 480px;
+  margin: 30px auto;
+  max-height: 800px;
+  min-height: 800px;
+  padding: 0;
+}
+
+#cityNameInput,
+#submitCity {
+  border: 1px solid #fff;
+  border-radius: 4px;
+}
+
+.currentWeather {
+  margin: 36px 10px;
+}
+
+.currentTemperature {
+  font-size: 48px;
+  font-weight: bold;
+  position: relative;
+  bottom: 16px;
+  left: 32px;
+}
+
+.unit-Choice {
+  padding-right: 8px;
+}
+
+section div .current-weather-icon {
+  font-size: 88px;
+  position: relative;
+  left: 24px;
+}
+
+.forecast {
+  margin: 200px 8px 20px 8px;
+}
+
+.card-body {
+  padding: 12px 6px;
+}
+.forecastIcons {
+  font-size: 20px;
+  margin-top: 8px;
+  position: relative;
+  left: 21px;
+}
+
+.nextDaysForecast {
+  margin-top: 32px;
+}
