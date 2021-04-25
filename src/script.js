@@ -102,25 +102,6 @@ citySearchForm.addEventListener("submit", updateCity);
 
 searchCity("Bordeaux");
 
-// Display current location
-function searchPosition() {
-  navigator.geolocation.getCurrentPosition(retrievePosition);
-}
-
-function retrievePosition(position) {
-  let latitude = position.coords.latitude;
-  let longitude = position.coords.longitude;
-  let apiKey = "07fdd9a483e10a4554fcd7222bb43e7b";
-  let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather?";
-  let units = "metric";
-  let apiUrl = `${apiEndpoint}&lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`;
-
-  axios.get(apiUrl).then(displayCurrentWeather);
-}
-
-let button = document.querySelector("button");
-button.addEventListener("click", searchPosition);
-
 // Display current time
 
 function displayCurrentDate(time) {
