@@ -33,12 +33,6 @@ function changeTemperatureUnit(event) {
   }
 }
 
-let celsiusRadioButton = document.querySelector("#celsius-degrees-input");
-let fahrenheitRadioButton = document.querySelector("#fahrenheit-degrees-input");
-
-celsiusRadioButton.addEventListener("click", changeTemperatureUnit);
-fahrenheitRadioButton.addEventListener("click", changeTemperatureUnit);
-
 //Display current weather
 function displayCurrentWeather(response) {
   let cityHeading = document.querySelector("#city-heading");
@@ -95,12 +89,6 @@ function updateCity(event) {
   let city = document.querySelector("#city-input").value;
   searchCity(city);
 }
-let citySearchForm = document.querySelector("#city-search-form");
-citySearchForm.addEventListener("submit", updateCity);
-
-// Display default location's weather
-
-searchCity("Bordeaux");
 
 // Display current time
 
@@ -145,6 +133,20 @@ function displayCurrentDate(time) {
   return `${day} | ${month}, ${date} | ${hour}h${minutes}`;
 }
 
+// Global variables
+let celsiusRadioButton = document.querySelector("#celsius-degrees-input");
+let fahrenheitRadioButton = document.querySelector("#fahrenheit-degrees-input");
+
+celsiusRadioButton.addEventListener("click", changeTemperatureUnit);
+fahrenheitRadioButton.addEventListener("click", changeTemperatureUnit);
+
+let citySearchForm = document.querySelector("#city-search-form");
+citySearchForm.addEventListener("submit", updateCity);
+
 let currentTime = new Date();
 let timeDisplay = document.querySelector("h2");
 timeDisplay.innerHTML = displayCurrentDate(currentTime);
+
+// Display default location's weather
+
+searchCity("Bordeaux");
