@@ -1,34 +1,26 @@
 //Switch temperature unit
 function changeTemperatureUnit(event) {
-  let currentTemperature = document.querySelector("#current-temperature");
-  let feelsLikeTemperature = document.querySelector("#feels-like-temperature");
-  let feelsLikeReveal = document.querySelector("#feels-like");
-  let windSpeed = document.querySelector("#wind-speed-value");
-  let windSpeedReveal = document.querySelector("#wind-speed");
-
   if (fahrenheitRadioButton.checked) {
     currentTemperature.innerHTML = Math.round(
-      currentTemperature.innerHTML * (9 / 5) + 32
+      celsiusTemperature * (9 / 5) + 32
     );
 
-    feelsLikeTemperature.innerHTML = Math.round(
-      feelsLikeTemperature.innerHTML * (9 / 5) + 32
+    feelsLikeTemperatureElement.innerHTML = Math.round(
+      feelsLikeTemperatureCelsius * (9 / 5) + 32
     );
-    feelsLikeReveal.innerHTML = `Feels like: ${feelsLikeTemperature.innerHTML}°F`;
+    feelsLikeReveal.innerHTML = `Feels like: ${feelsLikeTemperatureElement.innerHTML}°F`;
 
     windSpeed.innerHTML = Math.round(windSpeed.innerHTML * 1.609344);
     windSpeedReveal.innerHTML = `Wind: ${windSpeed.innerHTML}miles/h`;
   } else {
-    currentTemperature.innerHTML = Math.round(
-      (currentTemperature.innerHTML - 32) * (5 / 9)
-    );
+    currentTemperature.innerHTML = Math.round(celsiusTemperature);
 
-    feelsLikeTemperature.innerHTML = Math.round(
-      (feelsLikeTemperature.innerHTML - 32) * (5 / 9)
+    feelsLikeTemperatureElement.innerHTML = Math.round(
+      feelsLikeTemperatureCelsius
     );
-    feelsLikeReveal.innerHTML = `Feels like: ${feelsLikeTemperature.innerHTML}°C`;
+    feelsLikeReveal.innerHTML = `Feels like: ${feelsLikeTemperatureElement.innerHTML}°C`;
 
-    windSpeed.innerHTML = Math.round(windSpeed.innerHTML / 1.609344);
+    windSpeed.innerHTML = Math.round(windSpeedValueInternational);
     windSpeedReveal.innerHTML = `Wind: ${windSpeed.innerHTML}km/h`;
   }
 }
@@ -40,17 +32,22 @@ function displayCurrentWeather(response) {
   let country = response.data.sys.country;
   cityHeading.innerHTML = `${city}, ${country}`;
 
-  let currentTemperature = document.querySelector("#current-temperature");
-  currentTemperature.innerHTML = Math.round(response.data.main.temp);
+  celsiusTemperature = response.data.main.temp;
+  feelsLikeTemperatureCelsius = response.data.main.feels_like;
+  windSpeedValueInternational = response.data.wind.speed * 3.6;
+
+  currentTemperature.innerHTML = Math.round(celsiusTemperature);
 
   let currentWeather = document.querySelector("#current-weather-description");
   currentWeather.innerHTML = response.data.weather[0].main;
 
-  let feelsLikeTemperature = document.querySelector("#feels-like-temperature");
-  feelsLikeTemperature.innerHTML = Math.round(response.data.main.feels_like);
+  feelsLikeTemperatureElement.innerHTML = Math.round(
+    feelsLikeTemperatureCelsius
+  );
+  feelsLikeReveal.innerHTML = `Feels like: ${feelsLikeTemperatureElement.innerHTML}°C`;
 
-  let windSpeed = document.querySelector("#wind-speed-value");
-  windSpeed.innerHTML = Math.round(response.data.wind.speed * 3.6);
+  windSpeed.innerHTML = Math.round(windSpeedValueInternational);
+  windSpeedReveal.innerHTML = `Wind: ${windSpeed.innerHTML}km/h`;
 
   let humidity = Math.round(response.data.main.humidity);
   let humidityReveal = document.querySelector("#humidity");
@@ -134,6 +131,18 @@ function displayCurrentDate(time) {
 }
 
 // Global variables
+
+let celsiusTemperature = null;
+let feelsLikeTemperatureCelsius = null;
+let windSpeedValueInternational = null;
+let currentTemperature = document.querySelector("#current-temperature");
+let feelsLikeTemperatureElement = document.querySelector(
+  "#feels-like-temperature"
+);
+let windSpeed = document.querySelector("#wind-speed-value");
+let feelsLikeReveal = document.querySelector("#feels-like");
+let windSpeedReveal = document.querySelector("#wind-speed");
+
 let celsiusRadioButton = document.querySelector("#celsius-degrees-input");
 let fahrenheitRadioButton = document.querySelector("#fahrenheit-degrees-input");
 
