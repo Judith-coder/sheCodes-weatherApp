@@ -10,7 +10,7 @@ function changeTemperatureUnit(event) {
     );
     feelsLikeReveal.innerHTML = `Feels like: ${feelsLikeTemperatureElement.innerHTML}°F`;
 
-    windSpeed.innerHTML = Math.round(windSpeed.innerHTML * 1.609344);
+    windSpeed.innerHTML = Math.round(windSpeedValueAmerican);
     windSpeedReveal.innerHTML = `Wind: ${windSpeed.innerHTML}miles/h`;
   } else {
     currentTemperature.innerHTML = Math.round(celsiusTemperature);
@@ -36,6 +36,7 @@ function displayCurrentWeather(response) {
   celsiusTemperature = response.data.main.temp;
   feelsLikeTemperatureCelsius = response.data.main.feels_like;
   windSpeedValueInternational = response.data.wind.speed * 3.6;
+  windSpeedValueAmerican = response.data.wind.speed * 3.6 * 1.609344;
 
   currentTemperature.innerHTML = Math.round(celsiusTemperature);
 
@@ -151,6 +152,7 @@ function displayCurrentDate(time) {
 let celsiusTemperature = null;
 let feelsLikeTemperatureCelsius = null;
 let windSpeedValueInternational = null;
+let windSpeedValueAmerican = null;
 let currentTemperature = document.querySelector("#current-temperature");
 let feelsLikeTemperatureElement = document.querySelector(
   "#feels-like-temperature"
