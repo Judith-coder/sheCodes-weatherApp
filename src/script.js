@@ -27,6 +27,7 @@ function changeTemperatureUnit(event) {
 
 //Display current weather
 function displayCurrentWeather(response) {
+  console.log(response.data);
   let cityHeading = document.querySelector("#city-heading");
   let city = response.data.name;
   let country = response.data.sys.country;
@@ -40,6 +41,21 @@ function displayCurrentWeather(response) {
 
   let currentWeather = document.querySelector("#current-weather-description");
   currentWeather.innerHTML = response.data.weather[0].main;
+
+  weatherIcon = response.data.weather[0].icon;
+  iconElement.classList.remove(
+    "fa-sun",
+    "fa-moon",
+    "fa-cloud-sun",
+    "fa-cloud-moon",
+    "fa-cloud",
+    "fa-cloud-showers-heavy",
+    "fa-cloud-rain",
+    "fa-bolt",
+    "fa-snowflake",
+    "fa-smog"
+  );
+  iconElement.classList.add(icons[weatherIcon]);
 
   feelsLikeTemperatureElement.innerHTML = Math.round(
     feelsLikeTemperatureCelsius
@@ -155,6 +171,30 @@ citySearchForm.addEventListener("submit", updateCity);
 let currentTime = new Date();
 let timeDisplay = document.querySelector("h2");
 timeDisplay.innerHTML = displayCurrentDate(currentTime);
+
+let icons = {
+  "01d": "fa-sun", // Clear sky day,
+  "01n": "fa-moon", // Clear sky night
+  "02d": "fa-cloud-sun", // Few clouds day
+  "02n": "fa-cloud-moon", // Few clouds night
+  "03d": "fa-cloud", // Scattered clouds day
+  "03n": "fa-cloud", // Scattered clouds night
+  "04d": "fa-cloud", // Broken clouds day
+  "04n": "fa-cloud", // Broken clouds night
+  "09d": "fa-cloud-showers-heavy", // Shower rain day
+  "09n": "fa-cloud-showers-heavy", // Shower rain night
+  "10d": "fa-cloud-rain", // Rain day
+  "10n": "fa-cloud-rain", // Rain night
+  "11d": "fa-bolt", // Thunderstorm day
+  "11n": "fa-bolt", // Thunderstorm night
+  "13d": "fa-snowflake", // Snow day
+  "13n": "fa-snowflake", // Snow sky night
+  "50d": "fa-smog", // Mist day
+  "50n": "fa-smog", // Mist night
+};
+
+let weatherIcon = null;
+let iconElement = document.querySelector("#current-weather-icon");
 
 // Display default location's weather
 

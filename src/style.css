@@ -92,7 +92,7 @@ a {
   padding-right: 8px;
 }
 
-section div .current-weather-icon {
+section div #current-weather-icon {
   font-size: 88px;
   position: relative;
   left: 24px;
