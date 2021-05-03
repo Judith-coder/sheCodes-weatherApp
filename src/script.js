@@ -143,7 +143,7 @@ function displayCurrentDate(time) {
   ];
   let month = months[time.getMonth()];
 
-  return `${day} | ${month}, ${date} | ${hour}h${minutes}`;
+  return `Last updated ${day} | ${month}, ${date} | ${hour}h${minutes}`;
 }
 
 // Global variables
