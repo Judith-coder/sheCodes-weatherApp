@@ -25,6 +25,25 @@ function changeTemperatureUnit(event) {
   }
 }
 
+// Display 3-hours forecast
+function display3HoursForecast(response) {}
+
+// Display daily forecast
+function displayDailyForecast(response) {}
+
+// Get API url for the forecast data
+function getForecast(coordinates) {
+  let apiKey = "07fdd9a483e10a4554fcd7222bb43e7b";
+  let apiEndpoint = "https://api.openweathermap.org/data/2.5/onecall?";
+  let latitude = coordinates.lat;
+  let longitude = coordinates.lon;
+  let units = "metric";
+  let apiUrl = `${apiEndpoint}lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`;
+
+  axios.get(apiUrl).then(display3HoursForecast);
+  axios.get(apiUrl).then(displayDailyForecast);
+}
+
 //Display current weather
 function displayCurrentWeather(response) {
   console.log(response.data);
@@ -69,6 +88,8 @@ function displayCurrentWeather(response) {
   let humidity = Math.round(response.data.main.humidity);
   let humidityReveal = document.querySelector("#humidity");
   humidityReveal.innerHTML = `Humidity: ${humidity}%`;
+
+  getForecast(response.data.coord);
 }
 
 // Display searched city
