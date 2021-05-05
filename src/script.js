@@ -48,12 +48,6 @@ function formatDay(timestamp) {
   return days[day];
 }
 
-// Display weather icons
-function displayWeatherIconsForecast(icon) {
-  let hourlyForecastIcons = document.querySelector(".hourlyForecastIcons");
-  return icons[icon];
-}
-
 // Display 3-hours forecast
 function display3HoursForecast(response) {
   let hourlyForecast = response.data.hourly;
@@ -68,8 +62,6 @@ function display3HoursForecast(response) {
       index === 12 ||
       index === 15
     ) {
-      weatherIconForecast = forecastHour.weather[0].icon;
-
       hourlyForecastHTML =
         hourlyForecastHTML +
         `
@@ -77,9 +69,9 @@ function display3HoursForecast(response) {
             <div class="card">
               <div class="card-body">
                 <h5>${formatHour(forecastHour.dt)}</h5>
-                <i class="fas hourlyForecastIcons ${displayWeatherIconsForecast(
-                  weatherIconForecast
-                )}"></i>
+                <i class="fas forecastIcons ${
+                  icons[forecastHour.weather[0].icon]
+                }"></i>
                 <p>${Math.round(forecastHour.temp)}°C</p>
               </div>
             </div>
@@ -91,6 +83,7 @@ function display3HoursForecast(response) {
 
 // Display daily forecast
 function displayDailyForecast(response) {
+  console.log(response);
   let dailyForecast = response.data.daily;
   let dailyForecastElement = document.querySelector("#daily-forecast");
   let dailyForecastHTML = ``;
@@ -103,10 +96,10 @@ function displayDailyForecast(response) {
             <div class="card">
               <div class="card-body">
                 <h5>${formatDay(forecastDay.dt)}</h5>
-                <i class="fas forecastIcons ${displayWeatherIconsForecast(
-                  weatherIconForecast
-                )}"></i>
-                <p>${Math.round(forecastDay.temp.min)}° | ${Math.round(
+                <i class="fas forecastIcons ${
+                  icons[forecastDay.weather[0].icon]
+                }"></i>
+                <p>${Math.round(forecastDay.temp.min)}°| ${Math.round(
           forecastDay.temp.max
         )}°</p>
               </div>
@@ -132,6 +125,7 @@ function getForecast(coordinates) {
 
 //Display current weather
 function displayCurrentWeather(response) {
+  console.log(response);
   let cityHeading = document.querySelector("#city-heading");
   let city = response.data.name;
   let country = response.data.sys.country;
@@ -147,20 +141,10 @@ function displayCurrentWeather(response) {
   let currentWeather = document.querySelector("#current-weather-description");
   currentWeather.innerHTML = response.data.weather[0].main;
 
-  weatherIcon = response.data.weather[0].icon;
-  iconElement.classList.remove(
-    "fa-sun",
-    "fa-moon",
-    "fa-cloud-sun",
-    "fa-cloud-moon",
-    "fa-cloud",
-    "fa-cloud-showers-heavy",
-    "fa-cloud-rain",
-    "fa-bolt",
-    "fa-snowflake",
-    "fa-smog"
-  );
-  iconElement.classList.add(icons[weatherIcon]);
+  let iconElement = document.querySelector("#current-weather-icon");
+  iconElement.innerHTML = `<i class="fas ${
+    icons[response.data.weather[0].icon]
+  }" id="current-weather-icon"></i>`;
 
   feelsLikeTemperatureElement.innerHTML = Math.round(
     feelsLikeTemperatureCelsius
@@ -300,10 +284,6 @@ let icons = {
   "50d": "fa-smog", // Mist day
   "50n": "fa-smog", // Mist night
 };
-
-let weatherIcon = null;
-let weatherIconForecast = null;
-let iconElement = document.querySelector("#current-weather-icon");
 
 // Display default location's weather
 
