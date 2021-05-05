@@ -26,18 +26,28 @@ function changeTemperatureUnit(event) {
 }
 
 // Format Hour
-function formatHour(timestamp) {
+function formatHour(timestamp, timeZoneOffsetSearchedCity) {
   let date = new Date(timestamp * 1000);
-  let hour = date.getHours();
-  let minutes = date.getMinutes();
+  let hour =
+    date.getHours() +
+    currentLocationTimeZoneOffset / 60 +
+    timeZoneOffsetSearchedCity / 3600;
+
+  if (hour >= 24) {
+    hour = hour - 24;
+  } else if (hour < 0) {
+    hour = 24 + hour;
+  }
   if (hour < 10) {
     hour = `0${hour}`;
   }
+  let minutes = date.getMinutes();
+
   let min = date.getMinutes();
   if (min < 10) {
     min = `0${min}`;
-    return `${hour}:${min}`;
   }
+  return `${hour}:${min}`;
 }
 
 // Format Day
@@ -54,6 +64,7 @@ function display3HoursForecast(response) {
   let hourlyForecastElement = document.querySelector("#hourly-forecast");
   let hourlyForecastHTML = ``;
 
+  console.log(hourlyForecast);
   hourlyForecast.forEach(function (forecastHour, index) {
     if (
       index === 3 ||
@@ -68,7 +79,10 @@ function display3HoursForecast(response) {
     <div class="col">
             <div class="card">
               <div class="card-body">
-                <h5>${formatHour(forecastHour.dt)}</h5>
+                <h5>${formatHour(
+                  forecastHour.dt,
+                  timeZoneOffsetSearchedCity
+                )}</h5>
                 <i class="fas forecastIcons ${
                   icons[forecastHour.weather[0].icon]
                 }"></i>
@@ -159,6 +173,13 @@ function displayCurrentWeather(response) {
   humidityReveal.innerHTML = `Humidity: ${humidity}%`;
 
   getForecast(response.data.coord);
+
+  /// ZONE TEST
+  timeZoneOffsetSearchedCity = response.data.timezone; // timeZoneOffsetSearchedCity exprimé en secondes
+  timeDisplay.innerHTML = displayCurrentDate(
+    currentTime,
+    timeZoneOffsetSearchedCity
+  ); //// TEST !!!!!!!!!!!!!!
 }
 
 // Display searched city
@@ -196,16 +217,8 @@ function updateCity(event) {
 
 // Display current time
 
-function displayCurrentDate(time) {
+function displayCurrentDate(time, timeZoneOffsetSearchedCity) {
   let date = time.getDate();
-  let hour = time.getHours();
-  if (hour < 10) {
-    hour = `0${hour}`;
-  }
-  let minutes = time.getMinutes();
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
 
   let days = [
     "Sunday",
@@ -234,7 +247,36 @@ function displayCurrentDate(time) {
   ];
   let month = months[time.getMonth()];
 
-  return `Last updated ${day} | ${month}, ${date} | ${hour}h${minutes}`;
+  let hour =
+    time.getHours() +
+    currentLocationTimeZoneOffset / 60 +
+    timeZoneOffsetSearchedCity / 3600;
+  console.log(time.getHours());
+  console.log(currentLocationTimeZoneOffset / 60);
+  console.log(timeZoneOffsetSearchedCity / 3600);
+  console.log(hour);
+  if (hour >= 24) {
+    hour = hour - 24;
+    day = days[time.getDay() + 1];
+    date = time.getDate() + 1;
+  } else if (hour < 0) {
+    hour = 24 + hour;
+    day = days[time.getDay() - 1];
+    date = time.getDate() - 1;
+  }
+  //if (time.getHours() <= 12 && hour >= 12 && hour <= 24) {
+  //  day = days[time.getDay() + 1];
+  //  date = time.getDate() - 1;
+  //}
+  if (hour < 10) {
+    hour = `0${hour}`;
+  }
+
+  let minutes = time.getMinutes();
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+  return `${day} | ${month}, ${date} | ${hour}h${minutes}`;
 }
 
 // Global variables
@@ -261,8 +303,11 @@ let citySearchForm = document.querySelector("#city-search-form");
 citySearchForm.addEventListener("submit", updateCity);
 
 let currentTime = new Date();
+let currentLocationTimeZoneOffset = currentTime.getTimezoneOffset(); // Time zone offset provided in minutes
+let timeZoneOffsetSearchedCity = null;
 let timeDisplay = document.querySelector("h2");
-timeDisplay.innerHTML = displayCurrentDate(currentTime);
+
+//timeDisplay.innerHTML = displayCurrentDate(currentTime);
 
 let icons = {
   "01d": "fa-sun", // Clear sky day,
