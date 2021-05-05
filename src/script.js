@@ -25,49 +25,94 @@ function changeTemperatureUnit(event) {
   }
 }
 
+// Format Hour
+function formatHour(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let hour = date.getHours();
+  let minutes = date.getMinutes();
+  if (hour < 10) {
+    hour = `0${hour}`;
+  }
+  let min = date.getMinutes();
+  if (min < 10) {
+    min = `0${min}`;
+    return `${hour}:${min}`;
+  }
+}
+
+// Format Day
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return days[day];
+}
+
+// Display weather icons
+function displayWeatherIconsForecast(icon) {
+  let hourlyForecastIcons = document.querySelector(".hourlyForecastIcons");
+  return icons[icon];
+}
+
 // Display 3-hours forecast
 function display3HoursForecast(response) {
+  let hourlyForecast = response.data.hourly;
   let hourlyForecastElement = document.querySelector("#hourly-forecast");
   let hourlyForecastHTML = ``;
 
-  let hoursTitle = ["19h00", "22h00", "01h00", "04h00", "07h00"];
+  hourlyForecast.forEach(function (forecastHour, index) {
+    if (
+      index === 3 ||
+      index === 6 ||
+      index === 9 ||
+      index === 12 ||
+      index === 15
+    ) {
+      weatherIconForecast = forecastHour.weather[0].icon;
 
-  hoursTitle.forEach(function (hour) {
-    hourlyForecastHTML =
-      hourlyForecastHTML +
-      `
+      hourlyForecastHTML =
+        hourlyForecastHTML +
+        `
     <div class="col">
             <div class="card">
               <div class="card-body">
-                <h5>${hour}</h5>
-                <i class="fas fa-sun forecastIcons"></i>
-                <p>15°C</p>
+                <h5>${formatHour(forecastHour.dt)}</h5>
+                <i class="fas hourlyForecastIcons ${displayWeatherIconsForecast(
+                  weatherIconForecast
+                )}"></i>
+                <p>${Math.round(forecastHour.temp)}°C</p>
               </div>
             </div>
             </div>`;
+    }
   });
   hourlyForecastElement.innerHTML = hourlyForecastHTML;
 }
 
 // Display daily forecast
 function displayDailyForecast(response) {
+  let dailyForecast = response.data.daily;
   let dailyForecastElement = document.querySelector("#daily-forecast");
   let dailyForecastHTML = ``;
 
-  let daysTitle = ["Wed", "Thu", "Fri", "Sat", "Sun"];
-
-  daysTitle.forEach(function (day) {
-    dailyForecastHTML =
-      dailyForecastHTML +
-      `<div class="col">
+  dailyForecast.forEach(function (forecastDay, index) {
+    if (index > 0 && index < 6) {
+      dailyForecastHTML =
+        dailyForecastHTML +
+        `<div class="col">
             <div class="card">
               <div class="card-body">
-                <h5>${day}</h5>
-                <i class="fas fa-cloud-sun forecastIcons"></i>
-                <p>7° | 19°</p>
+                <h5>${formatDay(forecastDay.dt)}</h5>
+                <i class="fas forecastIcons ${displayWeatherIconsForecast(
+                  weatherIconForecast
+                )}"></i>
+                <p>${Math.round(forecastDay.temp.min)}° | ${Math.round(
+          forecastDay.temp.max
+        )}°</p>
               </div>
             </div>
           </div>`;
+    }
   });
   dailyForecastElement.innerHTML = dailyForecastHTML;
 }
@@ -87,7 +132,6 @@ function getForecast(coordinates) {
 
 //Display current weather
 function displayCurrentWeather(response) {
-  console.log(response.data);
   let cityHeading = document.querySelector("#city-heading");
   let city = response.data.name;
   let country = response.data.sys.country;
@@ -258,6 +302,7 @@ let icons = {
 };
 
 let weatherIcon = null;
+let weatherIconForecast = null;
 let iconElement = document.querySelector("#current-weather-icon");
 
 // Display default location's weather
