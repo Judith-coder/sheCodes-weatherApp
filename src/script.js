@@ -26,10 +26,51 @@ function changeTemperatureUnit(event) {
 }
 
 // Display 3-hours forecast
-function display3HoursForecast(response) {}
+function display3HoursForecast(response) {
+  let hourlyForecastElement = document.querySelector("#hourly-forecast");
+  let hourlyForecastHTML = ``;
+
+  let hoursTitle = ["19h00", "22h00", "01h00", "04h00", "07h00"];
+
+  hoursTitle.forEach(function (hour) {
+    hourlyForecastHTML =
+      hourlyForecastHTML +
+      `
+    <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5>${hour}</h5>
+                <i class="fas fa-sun forecastIcons"></i>
+                <p>15°C</p>
+              </div>
+            </div>
+            </div>`;
+  });
+  hourlyForecastElement.innerHTML = hourlyForecastHTML;
+}
 
 // Display daily forecast
-function displayDailyForecast(response) {}
+function displayDailyForecast(response) {
+  let dailyForecastElement = document.querySelector("#daily-forecast");
+  let dailyForecastHTML = ``;
+
+  let daysTitle = ["Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  daysTitle.forEach(function (day) {
+    dailyForecastHTML =
+      dailyForecastHTML +
+      `<div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5>${day}</h5>
+                <i class="fas fa-cloud-sun forecastIcons"></i>
+                <p>7° | 19°</p>
+              </div>
+            </div>
+          </div>`;
+  });
+  dailyForecastElement.innerHTML = dailyForecastHTML;
+}
 
 // Get API url for the forecast data
 function getForecast(coordinates) {
