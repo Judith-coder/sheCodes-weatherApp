@@ -12,6 +12,20 @@ function changeTemperatureUnit(event) {
 
     windSpeed.innerHTML = Math.round(windSpeedValueAmerican);
     windSpeedReveal.innerHTML = `Wind: ${windSpeed.innerHTML}miles/h`;
+
+    for (let loopNumber = 0; loopNumber < 16; loopNumber++) {
+      fahrenheitHourForecast[loopNumber] = Math.round(
+        celsiusHourForecast[loopNumber] * (9 / 5) + 32
+      );
+      fahrenheitDailyForecastMinimumTemperature[loopNumber] = Math.round(
+        celsiusDailyForecastMinimumTemperature[loopNumber] * (9 / 5) + 32
+      );
+      fahrenheitDailyForecastMaximumTemperature[loopNumber] = Math.round(
+        celsiusDailyForecastMaximumTemperature[loopNumber] * (9 / 5) + 32
+      );
+    }
+
+    fahrenheitForecast();
   } else {
     currentTemperature.innerHTML = Math.round(celsiusTemperature);
 
@@ -22,7 +36,111 @@ function changeTemperatureUnit(event) {
 
     windSpeed.innerHTML = Math.round(windSpeedValueInternational);
     windSpeedReveal.innerHTML = `Wind: ${windSpeed.innerHTML}km/h`;
+
+    celsiusForecast();
   }
+}
+
+// Switch temperature unit of the forecast to fahrenheit
+function fahrenheitForecast() {
+  let hourlyForecastElement = document.querySelector("#hourly-forecast");
+  let hourlyForecastHTML = ``;
+
+  for (let loopNumber = 0; loopNumber < 16; loopNumber++) {
+    if (
+      loopNumber === 3 ||
+      loopNumber === 6 ||
+      loopNumber === 9 ||
+      loopNumber === 12 ||
+      loopNumber === 15
+    ) {
+      hourlyForecastHTML =
+        hourlyForecastHTML +
+        `
+    <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5>${hoursForecast[loopNumber]}</h5>
+                <i class="fas forecastIcons ${iconsHourlyForecast[loopNumber]}
+                "></i>
+                <p>${fahrenheitHourForecast[loopNumber]}°F</p>
+              </div>
+            </div>
+            </div>`;
+    }
+  }
+  hourlyForecastElement.innerHTML = hourlyForecastHTML;
+
+  let dailyForecastElement = document.querySelector("#daily-forecast");
+  let dailyForecastHTML = ``;
+
+  for (let loopNumber = 0; loopNumber < 6; loopNumber++) {
+    if (loopNumber > 0 && loopNumber < 6) {
+      dailyForecastHTML =
+        dailyForecastHTML +
+        `<div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5>${daysForecast[loopNumber]}</h5>
+                <i class="fas forecastIcons ${iconsDailyForecast[loopNumber]}"></i>
+                <p>${fahrenheitDailyForecastMinimumTemperature[loopNumber]}°| ${fahrenheitDailyForecastMaximumTemperature[loopNumber]}°</p>
+              </div>
+            </div>
+          </div>`;
+    }
+  }
+  dailyForecastElement.innerHTML = dailyForecastHTML;
+}
+
+// Switch temperature unit of the forecast to celsius
+function celsiusForecast() {
+  let hourlyForecastElement = document.querySelector("#hourly-forecast");
+  let hourlyForecastHTML = ``;
+
+  for (let loopNumber = 0; loopNumber < 16; loopNumber++) {
+    if (
+      loopNumber === 3 ||
+      loopNumber === 6 ||
+      loopNumber === 9 ||
+      loopNumber === 12 ||
+      loopNumber === 15
+    ) {
+      hourlyForecastHTML =
+        hourlyForecastHTML +
+        `
+    <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5>${hoursForecast[loopNumber]}</h5>
+                <i class="fas forecastIcons ${iconsHourlyForecast[loopNumber]}
+                "></i>
+                <p>${celsiusHourForecast[loopNumber]}°C</p>
+              </div>
+            </div>
+            </div>`;
+    }
+  }
+  hourlyForecastElement.innerHTML = hourlyForecastHTML;
+
+  let dailyForecastElement = document.querySelector("#daily-forecast");
+  let dailyForecastHTML = ``;
+
+  for (let loopNumber = 0; loopNumber < 6; loopNumber++) {
+    if (loopNumber > 0 && loopNumber < 6) {
+      dailyForecastHTML =
+        dailyForecastHTML +
+        `<div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5>${daysForecast[loopNumber]}</h5>
+                <i class="fas forecastIcons ${iconsDailyForecast[loopNumber]}"></i>
+                <p>${celsiusDailyForecastMinimumTemperature[loopNumber]}°| ${celsiusDailyForecastMaximumTemperature[loopNumber]}°</p>
+              </div>
+            </div>
+          </div>`;
+    }
+  }
+  dailyForecastElement.innerHTML = dailyForecastHTML;
 }
 
 // Format Hour
@@ -64,7 +182,6 @@ function display3HoursForecast(response) {
   let hourlyForecastElement = document.querySelector("#hourly-forecast");
   let hourlyForecastHTML = ``;
 
-  console.log(hourlyForecast);
   hourlyForecast.forEach(function (forecastHour, index) {
     if (
       index === 3 ||
@@ -73,6 +190,13 @@ function display3HoursForecast(response) {
       index === 12 ||
       index === 15
     ) {
+      celsiusHourForecast[index] = Math.round(forecastHour.temp);
+      hoursForecast[index] = formatHour(
+        forecastHour.dt,
+        timeZoneOffsetSearchedCity
+      );
+      iconsHourlyForecast[index] = icons[forecastHour.weather[0].icon];
+
       hourlyForecastHTML =
         hourlyForecastHTML +
         `
@@ -86,7 +210,7 @@ function display3HoursForecast(response) {
                 <i class="fas forecastIcons ${
                   icons[forecastHour.weather[0].icon]
                 }"></i>
-                <p>${Math.round(forecastHour.temp)}°C</p>
+                <p>${celsiusHourForecast[index]}°C</p>
               </div>
             </div>
             </div>`;
@@ -97,13 +221,21 @@ function display3HoursForecast(response) {
 
 // Display daily forecast
 function displayDailyForecast(response) {
-  console.log(response);
   let dailyForecast = response.data.daily;
   let dailyForecastElement = document.querySelector("#daily-forecast");
   let dailyForecastHTML = ``;
 
   dailyForecast.forEach(function (forecastDay, index) {
     if (index > 0 && index < 6) {
+      daysForecast[index] = formatDay(forecastDay.dt);
+      iconsDailyForecast[index] = icons[forecastDay.weather[0].icon];
+      celsiusDailyForecastMinimumTemperature[index] = Math.round(
+        forecastDay.temp.min
+      );
+      celsiusDailyForecastMaximumTemperature[index] = Math.round(
+        forecastDay.temp.max
+      );
+
       dailyForecastHTML =
         dailyForecastHTML +
         `<div class="col">
@@ -139,7 +271,6 @@ function getForecast(coordinates) {
 
 //Display current weather
 function displayCurrentWeather(response) {
-  console.log(response);
   let cityHeading = document.querySelector("#city-heading");
   let city = response.data.name;
   let country = response.data.sys.country;
@@ -216,7 +347,6 @@ function updateCity(event) {
 }
 
 // Display current time
-
 function displayCurrentDate(time, timeZoneOffsetSearchedCity) {
   let date = time.getDate();
 
@@ -251,10 +381,6 @@ function displayCurrentDate(time, timeZoneOffsetSearchedCity) {
     time.getHours() +
     currentLocationTimeZoneOffset / 60 +
     timeZoneOffsetSearchedCity / 3600;
-  console.log(time.getHours());
-  console.log(currentLocationTimeZoneOffset / 60);
-  console.log(timeZoneOffsetSearchedCity / 3600);
-  console.log(hour);
   if (hour >= 24) {
     hour = hour - 24;
     day = days[time.getDay() + 1];
@@ -292,6 +418,17 @@ let feelsLikeTemperatureElement = document.querySelector(
 let windSpeed = document.querySelector("#wind-speed-value");
 let feelsLikeReveal = document.querySelector("#feels-like");
 let windSpeedReveal = document.querySelector("#wind-speed");
+
+let celsiusHourForecast = [];
+let fahrenheitHourForecast = [];
+let celsiusDailyForecastMinimumTemperature = [];
+let fahrenheitDailyForecastMinimumTemperature = [];
+let celsiusDailyForecastMaximumTemperature = [];
+let fahrenheitDailyForecastMaximumTemperature = [];
+let hoursForecast = [];
+let daysForecast = [];
+let iconsHourlyForecast = [];
+let iconsDailyForecast = [];
 
 let celsiusRadioButton = document.querySelector("#celsius-degrees-input");
 let fahrenheitRadioButton = document.querySelector("#fahrenheit-degrees-input");
