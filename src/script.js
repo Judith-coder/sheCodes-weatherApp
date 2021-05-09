@@ -344,6 +344,10 @@ function updateCity(event) {
   cityHeading.innerHTML = `${cityInput.value}`;
   let city = document.querySelector("#city-input").value;
   searchCity(city);
+
+  let unit = document.getElementsByName("unit");
+  unit[0].checked = true;
+  unit[1].checked = false;
 }
 
 // Display current time
