@@ -305,12 +305,11 @@ function displayCurrentWeather(response) {
 
   getForecast(response.data.coord);
 
-  /// ZONE TEST
   timeZoneOffsetSearchedCity = response.data.timezone; // timeZoneOffsetSearchedCity exprimé en secondes
   timeDisplay.innerHTML = displayCurrentDate(
     currentTime,
     timeZoneOffsetSearchedCity
-  ); //// TEST !!!!!!!!!!!!!!
+  );
 }
 
 // Display searched city
@@ -394,10 +393,7 @@ function displayCurrentDate(time, timeZoneOffsetSearchedCity) {
     day = days[time.getDay() - 1];
     date = time.getDate() - 1;
   }
-  //if (time.getHours() <= 12 && hour >= 12 && hour <= 24) {
-  //  day = days[time.getDay() + 1];
-  //  date = time.getDate() - 1;
-  //}
+
   if (hour < 10) {
     hour = `0${hour}`;
   }
@@ -447,8 +443,6 @@ let currentTime = new Date();
 let currentLocationTimeZoneOffset = currentTime.getTimezoneOffset(); // Time zone offset provided in minutes
 let timeZoneOffsetSearchedCity = null;
 let timeDisplay = document.querySelector("h2");
-
-//timeDisplay.innerHTML = displayCurrentDate(currentTime);
 
 let icons = {
   "01d": "fa-sun", // Clear sky day,
